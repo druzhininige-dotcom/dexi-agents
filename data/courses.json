@@ -1,0 +1,50 @@
+{
+  "_note": "ЧЕРНОВИК. Единый источник данных сайта. Гермес обязан сверить КАЖДОЕ поле с реальными данными бота @DEXI_agents_bot (названия, цены, сроки, категории, число мест) и перезаписать. Поля с confirmed=false не проверены.",
+  "bot": { "username": "DEXI_agents_bot", "url": "https://t.me/DEXI_agents_bot" },
+  "seats": { "total": 10, "free": 9, "note": "по оплаченным заявкам" },
+  "legal": { "line": "" },
+  "categories": [
+    { "id": "adults", "title": "Для взрослых" },
+    { "id": "student", "title": "Я студент" },
+    { "id": "market", "title": "Маркетплейсы и Китай" }
+  ],
+  "cats_confirmed": false,
+  "free_lesson": {
+    "title": "Таблица расчёта маржи",
+    "text": "Бесплатный мини-урок: посчитайте, сколько реально остаётся с продажи товара на маркетплейсе.",
+    "img": "img/c06.jpg",
+    "payload": "site_margin"
+  },
+  "courses": [
+    { "n": 1, "title": "Промпты: как получать нужный ответ", "price": 990, "duration": "2–3 недели", "cats": ["adults", "student"],
+      "summary": "Как формулировать запрос к нейросети, чтобы ответ получался точным с первых попыток.",
+      "img": "img/c01.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 2, "title": "Основы нейросетей", "price": 1490, "duration": "2–3 недели", "cats": ["adults", "student"],
+      "summary": "Как устроены нейросети и как выбрать инструмент под свою задачу, без лишней теории.",
+      "img": "img/c02.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 3, "title": "Учёба и рефераты с ИИ", "price": 1900, "duration": "2–3 недели", "cats": ["student"],
+      "summary": "Как использовать нейросети в учёбе и при подготовке рефератов.",
+      "img": "img/c03.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 4, "title": "Подработка с ИИ", "price": 2900, "duration": "2–3 недели", "cats": ["adults", "student"],
+      "summary": "Как зарабатывать на небольших задачах с помощью нейросетей.",
+      "img": "img/c04.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 5, "title": "Ошибки новичков на WB и Ozon", "price": null, "duration": "2–3 недели", "cats": ["market"],
+      "summary": "Типичные ошибки новичков на Wildberries и Ozon и как их не повторять.",
+      "img": "img/c05.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 6, "title": "Маржа и юнит-экономика", "price": null, "duration": "2–3 недели", "cats": ["market"],
+      "summary": "Как посчитать маржу и юнит-экономику товара на маркетплейсе.",
+      "img": "img/c06.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 7, "title": "Поиск поставщиков через Китай", "price": null, "duration": "2–3 недели", "cats": ["market"],
+      "summary": "Как искать и проверять поставщиков в Китае для своих товаров.",
+      "img": "img/c07.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 8, "title": "Портфолио за 3 недели", "price": 4900, "duration": "3 недели", "cats": ["adults", "student"],
+      "summary": "Как за три недели собрать своё портфолио и показать свои работы.",
+      "img": "img/c08.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false },
+    { "n": 9, "title": "ИИ-агент под свою задачу", "price": 19900, "duration": "4 недели", "cats": ["adults"],
+      "summary": "Основной курс: за четыре недели вы собираете ИИ-агента под свою задачу.",
+      "img": "img/c09.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false, "flagship": true },
+    { "n": 10, "title": "Рост и цели", "price": null, "duration": "2–3 недели", "cats": ["adults"],
+      "summary": "Описание появится после сверки с ботом.",
+      "img": "img/c10.jpg", "lessons": [], "audience": "", "outcomes": [], "confirmed": false, "title_confirmed": false }
+  ]
+}

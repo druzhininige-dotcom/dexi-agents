@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEXI Agents AI-Академия</title>
+<meta name="description" content="10 практических курсов по нейросетям: от первого промпта до своего ИИ-агента. Уроки по шагам, аудио к каждому уроку, обучение в Telegram.">
+<meta name="theme-color" content="#040a1c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DEXI Agents AI-Академия">
+<meta property="og:description" content="10 практических курсов по нейросетям: от первого промпта до своего ИИ-агента.">
+<meta property="og:image" content="https://druzhininige-dotcom.github.io/dexi-agents/img/og.jpg">
+<meta property="og:url" content="https://druzhininige-dotcom.github.io/dexi-agents/">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap&subset=cyrillic">
+<style>
+:root{
+  /* Замысел: тёмная «неоновая академия». Баннер-герой растворяется в фоне, слева липкая панель каталога,
+     справа сетка карточек; настоящий чат бота в блоке «Как это работает» ведёт в Telegram. */
+  --bg:#040a1c; --bg-2:#07112f; --card:#0a1740; --card-hi:#10235f;
+  --line:rgba(120,160,255,.22); --text:#eaf0ff; --muted:#9db0de;
+  --cyan:#35d8ff; --violet:#8f6bff; --gold:#ffd27a;
+  --font-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --font-body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --r:18px; --wrap:1180px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(900px 500px at 85% 8%,rgba(143,107,255,.16),transparent 60%),radial-gradient(800px 600px at 5% 40%,rgba(53,216,255,.09),transparent 60%),var(--bg)}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font:700 15px/1 var(--font-body);text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .2s,border-color .2s,background .2s}
+.btn:hover{transform:translateY(-2px);border-color:rgba(53,216,255,.6)}
+.btn-primary{border:0;background:linear-gradient(135deg,#35d8ff,#6f86ff 60%,#8f6bff);color:#04102e;box-shadow:0 8px 28px rgba(53,216,255,.25)}
+.btn-primary:hover{box-shadow:0 10px 34px rgba(53,216,255,.45)}
+.btn-sm{min-height:40px;padding:0 16px;font-size:14px;border-radius:12px}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* header */
+.top{position:sticky;top:0;z-index:30;background:rgba(4,10,28,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:24px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-display);font-size:17px;font-weight:500;white-space:nowrap}
+.logo b{font-weight:700}
+.logo svg{width:30px;height:30px}
+.top nav{display:flex;gap:22px;margin-left:auto;font-size:14px;font-weight:600;color:var(--muted)}
+.top nav a{text-decoration:none;padding:6px 0}
+.top nav a:hover{color:var(--text)}
+.top .btn{margin-left:0}
+
+/* hero */
+.hero-media{position:relative;height:clamp(230px,38vw,540px);overflow:hidden}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:18% 40%;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 55%,transparent 100%)}
+.hero-copy{position:relative;margin-top:-64px;padding-bottom:28px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.eyebrow::before{content:"";width:28px;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet))}
+.hero-copy h1{font-size:clamp(28px,5vw,58px);line-height:1.08;font-weight:700;margin:14px 0 18px;max-width:17ch}
+.hero-copy h1 em{font-style:normal;color:var(--cyan);text-shadow:0 0 28px rgba(53,216,255,.45)}
+.hero-copy .lead{max-width:60ch;color:var(--muted);font-size:clamp(16px,1.6vw,19px)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(10,23,64,.6);font-size:14px;font-weight:600;color:var(--text)}
+.chip i{width:8px;height:8px;border-radius:50%;background:#3ddc97;box-shadow:0 0 10px #3ddc97;animation:pulse 2.4s ease-in-out infinite}
+.chip small{color:var(--muted);font-weight:500;font-size:13px}
+@keyframes pulse{50%{opacity:.35}}
+
+/* facts */
+.facts{list-style:none;margin:40px auto 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--r);background:rgba(10,23,64,.45);overflow:hidden}
+.facts li{padding:22px 24px;border-right:1px solid var(--line)}
+.facts li:last-child{border-right:0}
+.facts strong{display:block;font:700 clamp(22px,2.6vw,32px)/1.1 var(--font-display);color:var(--cyan);margin-bottom:8px}
+.facts span{color:var(--muted);font-size:14px;display:block}
+
+/* sections */
+section{padding:84px 0 0}
+.sec-head{display:flex;flex-direction:column;gap:12px;margin-bottom:34px;max-width:720px}
+.sec-head h2{font-size:clamp(24px,3.4vw,40px);line-height:1.12;font-weight:700}
+.sec-head p{color:var(--muted);font-size:17px}
+
+/* catalog */
+.catalog>*,.how>*,.apply>*,.audio>*{min-width:0}
+.catalog{display:grid;grid-template-columns:280px 1fr;gap:30px;align-items:start}
+.aside{position:sticky;top:88px;display:flex;flex-direction:column;gap:18px}
+.aside img{border-radius:var(--r);border:1px solid var(--line);aspect-ratio:5/6;object-fit:cover;width:100%;box-shadow:0 0 60px rgba(143,107,255,.25)}
+.filters{display:flex;flex-direction:column;gap:8px}
+.fbtn{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:rgba(10,23,64,.5);color:var(--muted);font:700 14px var(--font-body);cursor:pointer;text-align:left;transition:.15s}
+.fbtn:hover{color:var(--text);border-color:rgba(53,216,255,.5)}
+.fbtn[aria-pressed="true"]{color:#04102e;background:linear-gradient(135deg,#35d8ff,#8f6bff);border-color:transparent}
+.fbtn b{font-weight:800;opacity:.75}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:linear-gradient(180deg,var(--card),#081334);transition:transform .2s,box-shadow .25s,border-color .2s}
+.card:hover{transform:translateY(-4px);border-color:rgba(53,216,255,.55);box-shadow:0 18px 50px rgba(53,216,255,.14)}
+.card figure{position:relative;margin:0;aspect-ratio:4/3;overflow:hidden}
+.card figure img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover figure img{transform:scale(1.05)}
+.card figure::after{content:"";position:absolute;inset:auto 0 0 0;height:60%;background:linear-gradient(to top,rgba(4,10,28,.92),transparent)}
+.num{position:absolute;z-index:1;left:16px;bottom:8px;font:700 46px/1 var(--font-display);color:transparent;-webkit-text-stroke:1.5px rgba(234,240,255,.9)}
+.tag{position:absolute;z-index:1;right:12px;top:12px;padding:5px 11px;border-radius:999px;background:rgba(255,210,122,.95);color:#2a1a00;font-size:12px;font-weight:800}
+.card-body{display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;flex:1}
+.card h3{font-family:var(--font-body);font-weight:800;font-size:18px;line-height:1.25;letter-spacing:0}
+.card p{color:var(--muted);font-size:14.5px;flex:1}
+.meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.dur{font-size:13px;font-weight:600;color:var(--muted)}
+.price{font:700 18px var(--font-display);color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
+.price.na{font:700 13px var(--font-body);color:var(--muted)}
+.card-act{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.card-act .btn{white-space:nowrap;padding:0 8px}
+
+/* free lesson band */
+.free{display:grid;grid-template-columns:minmax(220px,380px) 1fr;gap:0;border:1px solid var(--line);border-radius:26px;overflow:hidden;background:linear-gradient(120deg,var(--card-hi),var(--card));box-shadow:0 0 80px rgba(53,216,255,.12)}
+.free img{width:100%;height:100%;object-fit:cover;min-height:240px}
+.free-body{padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;gap:16px;justify-content:center;align-items:flex-start}
+.free-body .eyebrow{color:var(--gold)}
+.free-body .eyebrow::before{background:var(--gold)}
+.free-body h2{font-size:clamp(22px,3vw,34px);line-height:1.15}
+.free-body p{color:var(--muted);max-width:52ch;font-size:17px}
+
+/* how */
+.how{display:grid;grid-template-columns:1fr minmax(300px,380px);gap:clamp(30px,6vw,80px);align-items:center}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;counter-reset:s}
+.steps li{position:relative;padding:0 0 28px 64px;counter-increment:s}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--cyan);color:var(--cyan);font:700 16px var(--font-display);background:rgba(53,216,255,.08)}
+.steps li::after{content:"";position:absolute;left:21.5px;top:50px;bottom:6px;width:1px;background:linear-gradient(var(--line),transparent)}
+.steps li:last-child{padding-bottom:0}.steps li:last-child::after{display:none}
+.steps h3{font-family:var(--font-body);font-size:19px;font-weight:800;margin-bottom:4px;letter-spacing:0}
+.steps p{color:var(--muted)}
+
+/* phone */
+.phone{border:1px solid var(--line);border-radius:34px;background:#0b1424;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 90px rgba(143,107,255,.22);max-width:380px;width:100%;justify-self:center}
+.phone-bar{display:flex;align-items:center;gap:10px;padding:8px 10px 12px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:12px}
+.phone-bar img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+.phone-bar b{display:block;font-size:14px}.phone-bar small{color:#7d8ba6;font-size:12px}
+.bubble{background:#182233;border-radius:16px 16px 16px 4px;overflow:hidden;font-size:14px}
+.bubble img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.bubble div{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.bubble p{color:#e6ecf7}
+.bubble p small{color:#9fb0cc;font-size:13px}
+.tgbtns{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.tgbtns a{display:block;text-align:center;text-decoration:none;font-size:13.5px;font-weight:700;padding:11px 8px;border-radius:9px;background:rgba(58,130,210,.55);color:#fff;transition:background .15s}
+.tgbtns a:hover{background:rgba(58,130,210,.85)}
+.tgbtns a.alt{background:rgba(76,140,90,.5)}
+.tgbtns a.alt:hover{background:rgba(76,140,90,.8)}
+
+/* audio */
+.audio{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;padding:clamp(24px,4vw,44px);border:1px solid var(--line);border-radius:26px;background:radial-gradient(600px 240px at 90% 0%,rgba(143,107,255,.22),transparent 70%),rgba(10,23,64,.5)}
+.audio h2{font-size:clamp(22px,3vw,34px);margin-bottom:12px;line-height:1.15}
+.audio p{color:var(--muted);max-width:56ch;font-size:17px}
+.audio-side{display:flex;flex-direction:column;gap:12px;min-width:280px}
+.audio audio{width:100%;filter:invert(.92) hue-rotate(180deg)}
+.wave{display:flex;align-items:center;gap:4px;height:46px}
+.wave i{flex:1;max-width:6px;border-radius:3px;background:linear-gradient(var(--cyan),var(--violet));height:var(--h);opacity:.85}
+
+/* faq */
+.faq{max-width:820px;display:flex;flex-direction:column;gap:10px}
+details{border:1px solid var(--line);border-radius:14px;background:rgba(10,23,64,.5);transition:border-color .2s}
+details[open]{border-color:rgba(53,216,255,.5)}
+summary{list-style:none;cursor:pointer;padding:18px 54px 18px 20px;font-weight:700;font-size:17px;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:20px;top:50%;translate:0 -50%;font:500 26px/1 var(--font-body);color:var(--cyan);transition:rotate .2s}
+details[open] summary::after{rotate:45deg}
+details p{padding:0 20px 20px;color:var(--muted)}
+details p a{color:var(--cyan)}
+
+/* apply */
+.apply{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:start}
+form{display:flex;flex-direction:column;gap:14px;padding:clamp(20px,3vw,32px);border:1px solid var(--line);border-radius:22px;background:rgba(10,23,64,.55)}
+.f{display:flex;flex-direction:column;gap:6px}
+label{font-size:13px;font-weight:700;color:var(--muted)}
+input,select,textarea{width:100%;min-height:48px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(4,10,28,.7);color:var(--text);font:500 16px var(--font-body)}
+textarea{min-height:92px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
+select option{background:#0a1740}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);font-weight:500}
+.agree input{width:20px;min-height:20px;height:20px;margin-top:2px;accent-color:var(--cyan);flex:none}
+.agree a{color:var(--cyan)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.status{min-height:22px;font-size:14px;font-weight:600}
+.status.ok{color:#3ddc97}.status.err{color:#ff8a8a}
+.tgcard{display:flex;flex-direction:column;gap:16px;padding:clamp(22px,3vw,34px);border-radius:22px;border:1px solid var(--line);background:linear-gradient(150deg,var(--card-hi),var(--card));align-items:flex-start}
+.tgcard h3{font-size:22px;line-height:1.2}
+.tgcard p{color:var(--muted)}
+
+/* footer */
+footer{margin-top:90px;border-top:1px solid var(--line);padding:34px 0 40px;color:var(--muted);font-size:14px}
+.foot{display:flex;flex-wrap:wrap;gap:16px 36px;justify-content:space-between}
+.foot nav{display:flex;flex-wrap:wrap;gap:8px 22px}
+.foot a{text-decoration:none}.foot a:hover{color:var(--text)}
+
+/* modal */
+dialog{padding:0;border:1px solid var(--line);border-radius:24px;background:var(--bg-2);color:var(--text);width:min(900px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto}
+dialog::backdrop{background:rgba(2,6,20,.8);backdrop-filter:blur(6px)}
+.dlg{display:grid;grid-template-columns:minmax(260px,.9fr) 1.1fr}
+.dlg img{width:100%;height:100%;object-fit:cover;min-height:260px}
+.dlg-body{padding:clamp(22px,3vw,36px);display:flex;flex-direction:column;gap:14px}
+.dlg-body h3{font-size:clamp(20px,2.6vw,28px);line-height:1.2}
+.dlg-body .k{color:var(--cyan);font:700 13px var(--font-display);letter-spacing:.1em}
+.dlg-body ul,.dlg-body ol{margin:0;padding-left:20px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.dlg-body h4{margin:6px 0 0;font-size:14px;color:var(--text)}
+.dlg-x{position:absolute;right:12px;top:12px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(4,10,28,.7);color:var(--text);font-size:22px;cursor:pointer;z-index:2}
+.dlg-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+
+/* mobile cta */
+.mcta{display:none}
+
+@media (max-width:1000px){
+  .catalog{grid-template-columns:1fr}
+  .aside{position:static}
+  .aside img{display:none}
+  .filters{flex-direction:row;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+  .fbtn{white-space:nowrap;flex:none}
+  .how{grid-template-columns:1fr}
+  .apply{grid-template-columns:1fr}
+  .audio{grid-template-columns:1fr}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .facts li:nth-child(2){border-right:0}
+  .facts li:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .top nav{display:none}.top .btn{margin-left:auto}
+  section{padding-top:60px}
+  .free{grid-template-columns:1fr}.free img{min-height:0;aspect-ratio:16/9;height:auto}
+  .dlg{grid-template-columns:1fr}.dlg img{min-height:0;aspect-ratio:4/3;height:auto}
+  .hero-copy{margin-top:-40px}
+  .mcta{display:block;position:fixed;left:0;right:0;bottom:0;z-index:25;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(4,10,28,.88);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+  .mcta .btn{width:100%}
+  body{padding-bottom:76px}
+}
+@media (max-width:420px){
+  .facts li{padding:16px}
+  .cta-row .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#top" aria-label="DEXI Agents, на главную">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#35d8ff"/><stop offset="1" stop-color="#8f6bff"/></linearGradient></defs><circle cx="16" cy="16" r="13" fill="none" stroke="url(#lg)" stroke-width="2.5"/><circle cx="16" cy="16" r="5" fill="url(#lg)"/></svg>
+      <span><b>DEXI</b> Agents</span>
+    </a>
+    <nav aria-label="Разделы">
+      <a href="#courses">Курсы</a>
+      <a href="#how">Как проходит</a>
+      <a href="#audio">Аудио</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">Открыть в Telegram</a>
+  </div>
+</header>
+
+<main>
+<div class="hero-media"><img src="img/hero.jpg" width="1600" height="640" alt="Робот-наставник DEXI указывает на светящуюся модель нейросети"></div>
+<div class="wrap hero-copy">
+  <span class="eyebrow">AI-Академия</span>
+  <h1>От первого промпта до <em>своего ИИ-агента</em></h1>
+  <p class="lead" id="lead">10 практических курсов по нейросетям. Короткие занимают 2–3 недели, основной курс «Агент под свою задачу» идёт 4 недели. К каждому уроку есть аудио.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#courses">Выбрать курс</a>
+    <a class="btn" data-tg="site" href="https://t.me/DEXI_agents_bot?start=site"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>Открыть бота</a>
+  </div>
+  <div class="chips">
+    <span class="chip"><i></i><span id="seatsChip">Свободно мест: 9 из 10</span><small id="seatsNote">по оплаченным заявкам</small></span>
+    <span class="chip" id="fromChip">от 990 ₽</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <ul class="facts">
+    <li><strong>10</strong><span>курсов: от промптов до сборки агента</span></li>
+    <li><strong>2–4</strong><span>недели на курс</span></li>
+    <li><strong>Аудио</strong><span>к каждому уроку, слушать можно в дороге</span></li>
+    <li><strong>По шагам</strong><span>сдали урок, открылся следующий</span></li>
+  </ul>
+</div>
+
+<section id="courses">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Каталог: 10 курсов</h2>
+      <p>Выберите свой маршрут. Курсы идут по номерам, но начать можно с любого.</p>
+    </div>
+    <div class="catalog">
+      <aside class="aside">
+        <img src="img/catalog.jpg" width="900" height="1080" alt="Светящаяся раскрытая книга над нейросетью" loading="lazy">
+        <div class="filters" id="filters" role="group" aria-label="Фильтр курсов"></div>
+      </aside>
+      <div class="grid" id="grid" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section id="free">
+  <div class="wrap">
+    <div class="free">
+      <img id="freeImg" src="img/c06.jpg" alt="" loading="lazy">
+      <div class="free-body">
+        <span class="eyebrow">Бесплатно</span>
+        <h2 id="freeTitle">Таблица расчёта маржи</h2>
+        <p id="freeText">Бесплатный мини-урок: посчитайте, сколько реально остаётся с продажи товара на маркетплейсе.</p>
+        <a class="btn btn-primary" id="freeBtn" data-tg="site_margin" href="https://t.me/DEXI_agents_bot?start=site_margin">Получить в Telegram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap how">
+    <div>
+      <div class="sec-head"><h2>Как проходит обучение</h2><p>Сайт показывает каталог. Всё остальное происходит в Telegram-боте.</p></div>
+      <ol class="steps">
+        <li><h3>Выберите курс</h3><p>На сайте или прямо в боте. Каталог везде одинаковый.</p></li>
+        <li><h3>Нажмите «Купить» в боте</h3><p>Заявка на оплату сразу уходит автору курсов.</p></li>
+        <li><h3>Получите доступ</h3><p>Оплату подтверждает автор вручную, после этого курс открывается в вашем Telegram.</p></li>
+        <li><h3>Проходите по шагам</h3><p>Сделали урок, сдали, получили следующий. К каждому уроку есть аудио.</p></li>
+      </ol>
+    </div>
+    <div class="phone" aria-label="Так выглядит бот в Telegram">
+      <div class="phone-bar"><img src="img/c09.jpg" alt=""><div><b>DEXI Agents</b><small>бот</small></div></div>
+      <div class="bubble">
+        <img src="img/hero.jpg" alt="" loading="lazy">
+        <div>
+          <p><b>🎓 DEXI Agents — AI-Академия</b></p>
+          <p>10 практических курсов: короткие на 2–3 недели и основной «Агент под свою задачу» на 4 недели.</p>
+          <p id="phoneSeats"><small>Свободно мест: <b>9 из 10</b> (по оплаченным заявкам)</small></p>
+        </div>
+      </div>
+      <div class="tgbtns">
+        <a data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">🎓 Выбрать курс</a>
+        <a data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">🎯 С чего начать</a>
+        <a class="alt" data-tg="site_margin" href="https://t.me/DEXI_agents_bot?start=site_margin">Бесплатно: таблица расчёта маржи</a>
+        <a class="alt" data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">О курсах</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="audio">
+  <div class="wrap">
+    <div class="audio">
+      <div>
+        <h2>Слушайте в дороге</h2>
+        <p>Личный инструктор проговаривает материал как аудиокнига. Когда нужна таблица, он не зачитывает её, а подсказывает, куда зайти и что сделать.</p>
+      </div>
+      <div class="audio-side">
+        <div class="wave" id="wave" aria-hidden="true"></div>
+        <audio id="demo" controls preload="none" hidden></audio>
+        <a class="btn" id="audioTg" data-tg="site_audio" href="https://t.me/DEXI_agents_bot?start=site_audio">Послушать в Telegram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><h2>Частые вопросы</h2></div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+<section id="apply">
+  <div class="wrap">
+    <div class="sec-head"><h2>Остались вопросы? Оставьте заявку</h2><p>Ответим лично в Telegram или по телефону.</p></div>
+    <div class="apply">
+      <form id="leadForm" novalidate>
+        <div class="f"><label for="fName">Имя</label><input id="fName" name="name" autocomplete="name" required></div>
+        <div class="f"><label for="fContact">Telegram или телефон</label><input id="fContact" name="contact" autocomplete="tel" placeholder="@username или +7…" required></div>
+        <div class="f"><label for="fCourse">Курс</label><select id="fCourse" name="course"><option value="">Пока не определился</option></select></div>
+        <div class="f"><label for="fMsg">Вопрос (по желанию)</label><textarea id="fMsg" name="message"></textarea></div>
+        <input class="hp" type="text" name="website" id="fHp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label class="agree" for="fAgree"><input type="checkbox" id="fAgree" name="agree" required><span>Согласен на обработку персональных данных по <a href="privacy.html">политике конфиденциальности</a></span></label>
+        <button class="btn btn-primary" type="submit">Оставить заявку</button>
+        <div class="status" id="fStatus" role="status"></div>
+      </form>
+      <div class="tgcard">
+        <h3>Быстрее всего в Telegram</h3>
+        <p>Бот покажет каталог, откроет бесплатный мини-урок и примет заявку на курс.</p>
+        <a class="btn btn-primary" data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">Открыть @DEXI_agents_bot</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div><b style="color:var(--text)">DEXI Agents</b> · AI-Академия<div id="legalLine"></div></div>
+    <nav aria-label="Документы">
+      <a href="oferta.html">Публичная оферта</a>
+      <a href="privacy.html">Политика конфиденциальности</a>
+      <a data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">@DEXI_agents_bot</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="mcta"><a class="btn btn-primary" data-tg="site" href="https://t.me/DEXI_agents_bot?start=site">Открыть в Telegram</a></div>
+
+<dialog id="cm" aria-labelledby="cmTitle"><button class="dlg-x" id="cmX" aria-label="Закрыть">×</button><div class="dlg" id="cmBody"></div></dialog>
+
+<noscript><div class="wrap" style="padding:30px 20px">Для просмотра каталога включите JavaScript или откройте <a href="https://t.me/DEXI_agents_bot?start=site">бота в Telegram</a>.</div></noscript>
+
+<script type="application/json" id="data">{"_note":"ЧЕРНОВИК. Единый источник данных сайта. Гермес обязан сверить КАЖДОЕ поле с реальными данными бота @DEXI_agents_bot (названия, цены, сроки, категории, число мест) и перезаписать. Поля с confirmed=false не проверены.","bot":{"username":"DEXI_agents_bot","url":"https://t.me/DEXI_agents_bot"},"seats":{"total":10,"free":9,"note":"по оплаченным заявкам"},"legal":{"line":""},"categories":[{"id":"adults","title":"Для взрослых"},{"id":"student","title":"Я студент"},{"id":"market","title":"Маркетплейсы и Китай"}],"cats_confirmed":false,"free_lesson":{"title":"Таблица расчёта маржи","text":"Бесплатный мини-урок: посчитайте, сколько реально остаётся с продажи товара на маркетплейсе.","img":"img/c06.jpg","payload":"site_margin"},"courses":[{"n":1,"title":"Промпты: как получать нужный ответ","price":990,"duration":"2–3 недели","cats":["adults","student"],"summary":"Как формулировать запрос к нейросети, чтобы ответ получался точным с первых попыток.","img":"img/c01.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":2,"title":"Основы нейросетей","price":1490,"duration":"2–3 недели","cats":["adults","student"],"summary":"Как устроены нейросети и как выбрать инструмент под свою задачу, без лишней теории.","img":"img/c02.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":3,"title":"Учёба и рефераты с ИИ","price":1900,"duration":"2–3 недели","cats":["student"],"summary":"Как использовать нейросети в учёбе и при подготовке рефератов.","img":"img/c03.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":4,"title":"Подработка с ИИ","price":2900,"duration":"2–3 недели","cats":["adults","student"],"summary":"Как зарабатывать на небольших задачах с помощью нейросетей.","img":"img/c04.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":5,"title":"Ошибки новичков на WB и Ozon","price":null,"duration":"2–3 недели","cats":["market"],"summary":"Типичные ошибки новичков на Wildberries и Ozon и как их не повторять.","img":"img/c05.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":6,"title":"Маржа и юнит-экономика","price":null,"duration":"2–3 недели","cats":["market"],"summary":"Как посчитать маржу и юнит-экономику товара на маркетплейсе.","img":"img/c06.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":7,"title":"Поиск поставщиков через Китай","price":null,"duration":"2–3 недели","cats":["market"],"summary":"Как искать и проверять поставщиков в Китае для своих товаров.","img":"img/c07.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":8,"title":"Портфолио за 3 недели","price":4900,"duration":"3 недели","cats":["adults","student"],"summary":"Как за три недели собрать своё портфолио и показать свои работы.","img":"img/c08.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false},{"n":9,"title":"ИИ-агент под свою задачу","price":19900,"duration":"4 недели","cats":["adults"],"summary":"Основной курс: за четыре недели вы собираете ИИ-агента под свою задачу.","img":"img/c09.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false,"flagship":true},{"n":10,"title":"Рост и цели","price":null,"duration":"2–3 недели","cats":["adults"],"summary":"Описание появится после сверки с ботом.","img":"img/c10.jpg","lessons":[],"audience":"","outcomes":[],"confirmed":false,"title_confirmed":false}]}</script>
+<script>
+(function(){
+"use strict";
+var D=null, cat="all";
+var $=function(s,r){return (r||document).querySelector(s)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function money(n){return n==null?null:new Intl.NumberFormat("ru-RU").format(n).replace(/ | /g," ")+" ₽"}
+function pad(n){return (n<10?"0":"")+n}
+function tg(p){return D.bot.url+(p?"?start="+encodeURIComponent(p):"")}
+
+async function load(){
+  try{var r=await fetch("data/courses.json",{cache:"no-store"});if(r.ok)return await r.json()}catch(e){}
+  return JSON.parse($("#data").textContent);
+}
+
+function priceHtml(c){var m=money(c.price);return m?'<span class="price">'+m+'</span>':'<span class="price na">цена в боте</span>'}
+
+function card(c){
+  return '<article class="card" data-n="'+c.n+'">'+
+    '<figure><img src="'+esc(c.img)+'" alt="" width="1200" height="900" loading="lazy">'+
+    (c.flagship?'<span class="tag">Основной курс</span>':'')+
+    '<span class="num" aria-hidden="true">'+pad(c.n)+'</span></figure>'+
+    '<div class="card-body"><h3>'+esc(c.title)+'</h3><p>'+esc(c.summary)+'</p>'+
+    '<div class="meta"><span class="dur">'+esc(c.duration)+'</span>'+priceHtml(c)+'</div>'+
+    '<div class="card-act"><button class="btn btn-sm" type="button" data-open="'+c.n+'">Подробнее</button>'+
+    '<a class="btn btn-sm btn-primary" href="'+tg("site_c"+pad(c.n))+'">В Telegram</a></div></div></article>';
+}
+
+function renderGrid(){
+  var list=D.courses.slice().sort(function(a,b){return a.n-b.n}).filter(function(c){return cat==="all"||c.cats.indexOf(cat)>-1});
+  $("#grid").innerHTML=list.map(card).join("");
+}
+function renderFilters(){
+  var all=D.courses.length, h='<button class="fbtn" type="button" data-cat="all" aria-pressed="true">Все курсы <b>'+all+'</b></button>';
+  D.categories.forEach(function(k){
+    var n=D.courses.filter(function(c){return c.cats.indexOf(k.id)>-1}).length;
+    h+='<button class="fbtn" type="button" data-cat="'+esc(k.id)+'" aria-pressed="false">'+esc(k.title)+' <b>'+n+'</b></button>';
+  });
+  $("#filters").innerHTML=h;
+}
+
+function openCourse(n,push){
+  var c=D.courses.find(function(x){return x.n===n}); if(!c)return;
+  var m=money(c.price);
+  var h='<img src="'+esc(c.img)+'" alt="">'+
+   '<div class="dlg-body"><span class="k">КУРС '+pad(c.n)+(c.flagship?' · ОСНОВНОЙ':'')+'</span>'+
+   '<h3 id="cmTitle">'+esc(c.title)+'</h3>'+
+   '<div class="meta" style="justify-content:flex-start;gap:18px"><span class="dur">'+esc(c.duration)+'</span>'+priceHtml(c)+'</div>'+
+   '<p style="color:var(--muted)">'+esc(c.summary)+'</p>';
+  if(c.audience)h+='<h4>Для кого</h4><p style="color:var(--muted)">'+esc(c.audience)+'</p>';
+  if(c.outcomes&&c.outcomes.length)h+='<h4>Что получите</h4><ul>'+c.outcomes.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>';
+  if(c.lessons&&c.lessons.length)h+='<h4>Программа</h4><ol>'+c.lessons.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol>';
+  h+='<h4>Как проходит</h4><ul><li>Уроки выдаются по одному: сдали, получили следующий</li><li>К каждому уроку есть аудио</li><li>Доступ открывается после подтверждения оплаты</li></ul>'+
+   '<div class="dlg-act"><a class="btn btn-primary" href="'+tg("site_c"+pad(c.n))+'">Купить в Telegram</a>'+
+   '<button class="btn" type="button" data-ask="'+c.n+'">Задать вопрос</button></div></div>';
+  $("#cmBody").innerHTML=h;
+  var d=$("#cm"); if(!d.open){try{d.showModal()}catch(e){d.setAttribute("open","")}}
+  if(push)location.hash="course-"+pad(n);
+}
+function closeCourse(){var d=$("#cm"); if(d.open)d.close()}
+function route(){
+  var m=/^#course-(\d+)$/.exec(location.hash);
+  if(m&&D)openCourse(parseInt(m[1],10),false); else closeCourse();
+}
+
+function seats(){
+  var s=D.seats;
+  $("#seatsChip").textContent="Свободно мест: "+s.free+" из "+s.total;
+  $("#seatsNote").textContent=s.note||"";
+  $("#phoneSeats").innerHTML="<small>Свободно мест: <b>"+s.free+" из "+s.total+"</b>"+(s.note?" ("+esc(s.note)+")":"")+"</small>";
+}
+function fromPrice(){
+  var p=D.courses.map(function(c){return c.price}).filter(function(x){return x!=null});
+  if(p.length)$("#fromChip").textContent="от "+money(Math.min.apply(null,p)); else $("#fromChip").hidden=true;
+}
+function faq(){
+  var s=D.seats, items=[
+   ["Как начать?","Нажмите «Открыть в Telegram»: бот покажет каталог. Можно начать с бесплатной таблицы расчёта маржи."],
+   ["Как оплатить и получить доступ?","В боте нажмите «Купить» у выбранного курса. Оплату подтверждает автор вручную, после этого курс открывается в вашем Telegram."],
+   ["Что значит «свободно мест»?","Набор ограничен, места считаются по оплаченным заявкам. Сейчас свободно "+s.free+" из "+s.total+"."],
+   ["Как устроено обучение?","Уроки выдаются по одному: сделали задание, сдали, получили следующий. К каждому уроку есть аудио, его можно слушать в дороге."],
+   ["Где условия и возврат?",'Все условия описаны в <a href="oferta.html">публичной оферте</a>. Прочитайте её до оплаты.']
+  ];
+  $("#faqList").innerHTML=items.map(function(i){return '<details><summary>'+esc(i[0])+'</summary><p>'+i[1]+'</p></details>'}).join("");
+}
+function selectCourses(){
+  var s=$("#fCourse");
+  D.courses.slice().sort(function(a,b){return a.n-b.n}).forEach(function(c){
+    var o=document.createElement("option");o.value=pad(c.n);o.textContent=pad(c.n)+" · "+c.title;s.appendChild(o);
+  });
+}
+function links(){
+  document.querySelectorAll("[data-tg]").forEach(function(a){a.href=tg(a.getAttribute("data-tg"))});
+}
+function wave(){
+  var h="",i;for(i=0;i<46;i++){h+='<i style="--h:'+(10+Math.round(Math.abs(Math.sin(i*.55)*Math.cos(i*.21))*36))+'px"></i>'}
+  $("#wave").innerHTML=h;
+}
+function audio(){
+  var f="audio/demo_course01.mp3";
+  fetch(f,{method:"HEAD"}).then(function(r){
+    if(!r.ok)return;var a=$("#demo");a.src=f;a.hidden=false;$("#wave").hidden=true;$("#audioTg").textContent="Весь курс в Telegram";
+  }).catch(function(){});
+}
+function free(){
+  var f=D.free_lesson; if(!f)return;
+  $("#freeTitle").textContent=f.title;$("#freeText").textContent=f.text;$("#freeImg").src=f.img;$("#freeBtn").setAttribute("data-tg",f.payload);
+}
+
+function form(){
+  var f=$("#leadForm"),st=$("#fStatus");
+  f.addEventListener("submit",async function(e){
+    e.preventDefault(); st.className="status"; st.textContent="";
+    if($("#fHp").value)return;
+    var name=$("#fName").value.trim(),contact=$("#fContact").value.trim();
+    if(name.length<2){st.className="status err";st.textContent="Укажите имя.";$("#fName").focus();return}
+    if(contact.length<4){st.className="status err";st.textContent="Укажите Telegram или телефон, чтобы мы могли ответить.";$("#fContact").focus();return}
+    if(!$("#fAgree").checked){st.className="status err";st.textContent="Нужно согласие на обработку персональных данных.";return}
+    var btn=f.querySelector("button[type=submit]");
+    /* Статичная версия (GitHub Pages): серверного /api/lead нет — заявка уходит в бота
+       без отправки персональных данных по сети: открываем @DEXI_agents_bot с меткой курса. */
+    st.className="status ok";
+    st.innerHTML='Заявка принята. Нажмите «Отправить в Telegram» — бот сразу откроет каталог, и мы ответим лично.';
+    var go=document.createElement("a");
+    go.className="btn btn-primary"; go.style.marginTop="12px"; go.style.display="inline-block";
+    go.href=tg("site"); go.textContent="Отправить в Telegram";
+    st.appendChild(document.createElement("br")); st.appendChild(go);
+    f.reset();
+  });
+}
+
+document.addEventListener("click",function(e){
+  var o=e.target.closest("[data-open]"); if(o){openCourse(parseInt(o.getAttribute("data-open"),10),true);return}
+  var a=e.target.closest("[data-ask]"); if(a){$("#fCourse").value=pad(parseInt(a.getAttribute("data-ask"),10));closeCourse();location.hash="apply";return}
+  var fb=e.target.closest("[data-cat]"); if(fb){cat=fb.getAttribute("data-cat");document.querySelectorAll(".fbtn").forEach(function(b){b.setAttribute("aria-pressed",b===fb?"true":"false")});renderGrid();return}
+  if(e.target===$("#cm")||e.target.closest("#cmX")){closeCourse();if(/^#course-/.test(location.hash))location.hash="courses"}
+});
+$("#cm").addEventListener("cancel",function(){if(/^#course-/.test(location.hash))location.hash="courses"});
+window.addEventListener("hashchange",route);
+
+load().then(function(d){
+  D=d; seats(); fromPrice(); renderFilters(); renderGrid(); faq(); selectCourses(); links(); wave(); audio(); free(); form(); links();
+  var ld=$("#legalLine"); if(D.legal&&D.legal.line)ld.textContent=D.legal.line;
+  route();
+});
+})();
+</script>
+</body>
+</html>
